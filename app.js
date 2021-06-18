@@ -11,8 +11,7 @@ class Book {
 //UI Class: Handle UI Task
 class UI {
   static displayBooks() {
- 
-    const books = Store.getBooks();
+   const books = Store.getBooks();
 
     books.forEach((book) => UI.addBookToList(book));
   }
@@ -28,6 +27,7 @@ class UI {
         `;
     list.appendChild(row);
   }
+
   static deleteBook(el){
       if(el.classList.contains('delete')){
           el.parentElement.parentElement.remove();
@@ -42,7 +42,7 @@ class UI {
       const form = document.querySelector('#book-form');
       container.insertBefore(div,form);
       //vanish in 3 sec
-      setTimeout(()=> document.querySelector('.alert').remove(),3000);
+      setTimeout(()=> document.querySelector('.alert').remove(),1000);
   }
 
   static clearFields() {
@@ -54,7 +54,7 @@ class UI {
 //storage Class:Handle Storage
 
 class Store{
-    static getBook(){
+    static getBooks(){
     let books;
     if (localStorage.getItem('books') === null){
        books= [];
@@ -72,16 +72,18 @@ class Store{
     }
 
     static removeBook(isbn){
-        const books = Store.getBook();
-        books.forEach((book, index)=>{
-            if(book.isbn===isbn){
-                books.splice(index, 1)
+        const books = Store.getBooks();
+
+        books.forEach((book, index) => {
+            if(book.isbn === isbn){
+                books.splice(index, 1);
             }
         });
-        localStorage.setItem('books',JSON.stringify(book))
+        localStorage.setItem('books', JSON.stringify(books));
        
     }
 }
+
 
 //Event: Display Books
 
@@ -120,16 +122,18 @@ document.querySelector("#book-form").addEventListener("submit", (e) => {
 
  
 });
-//Event: Remove a Book
+
+
+//Event: Remove Book from UI
 document.querySelector('#book-list').addEventListener('click', (e)=>{
     UI.deleteBook(e.target);
+   
 
    // remove book from store
-Store.removeBook(
-    e.target.parentElement.parentElementSibling.textContent
-);
+Store.removeBook
+(e.target.parentElement.previousElementSibling.textContent);
 
-
-    UI.showAlert('Book removed', 'success')
-})
+UI.showAlert('Book Removed', 'success')
+   
+});
 
